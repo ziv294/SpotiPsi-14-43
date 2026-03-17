@@ -1,0 +1,27 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 110px;
+  height: 100vh;
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  direction: rtl;
+}
+
+.item {
+  color: white;
+  font-size: 12px;
+  text-align: right;
+  padding: 12px 10px;
+  cursor: pointer;
+}
+
+.item:hover {
+  background-color: #1a1a1a;
+}
+
+.active {
+  background-color: #2f2447;
+}
