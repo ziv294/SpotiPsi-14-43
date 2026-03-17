@@ -1,4 +1,4 @@
-import useStyles from "../componentsStyles/HeaderStyles";
+import useStyles from "./HeaderStyles";
 
 const Header: React.FC = () => {
   const classes = useStyles();
