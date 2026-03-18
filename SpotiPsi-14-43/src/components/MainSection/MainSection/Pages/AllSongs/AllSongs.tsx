@@ -7,9 +7,9 @@ type Song = {
   artist: string;
 };
 
-const MainSection: React.FC = () => {
+const AllSongs: React.FC = () => {
   const classes = useStyles();
-
+  
   const [songs, setSongs] = useState<Song[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
 
@@ -33,16 +33,44 @@ const MainSection: React.FC = () => {
     }
   };
 
+  // 🔥 הוספתי טעינת favorites מהשרת
+  const fetchFavorites = async () => {
+    try {
+      const res = await fetch("http://localhost:5001/api/favorites");
+      const data = await res.json();
+      setFavorites(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchSongs();
+    fetchFavorites(); // 🔥 חדש
   }, []);
 
-  const toggleFavorite = (id: string) => {
-    setFavorites((prev) =>
-      prev.includes(id)
-        ? prev.filter((songId) => songId !== id)
-        : [...prev, id]
-    );
+  // 🔥 החלפתי רק את הלוגיקה – לא את השימוש
+  const toggleFavorite = async (id: string) => {
+    try {
+      const isFavorite = favorites.includes(id);
+
+      const url = isFavorite
+        ? "http://localhost:5001/api/favorites/remove"
+        : "http://localhost:5001/api/favorites/add";
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ songId: id }),
+      });
+
+      const updatedFavorites = await res.json();
+      setFavorites(updatedFavorites);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -50,7 +78,6 @@ const MainSection: React.FC = () => {
       <h1 className={classes.title}>כל השירים</h1>
 
       {isLoading && <p>Loading...</p>}
-
       {error && <p>{error}</p>}
 
       {!isLoading && !error && (
@@ -86,4 +113,4 @@ const MainSection: React.FC = () => {
   );
 };
 
-export default MainSection;
+export default AllSongs;
