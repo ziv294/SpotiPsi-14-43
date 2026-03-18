@@ -1,0 +1,93 @@
+.MediaPlayer {
+  width: 100%;
+  min-height: 90px;
+  background-color: #1f1f1f;
+  color: white;
+  padding: 8px 14px;
+  box-sizing: border-box;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+}
+
+.songInfo {
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.songName {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.artistName {
+  margin: 2px;
+  font-size: 11px;
+  color: #cfcfcf;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+
+.controlButton{
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.playButton {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.timeBarSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.timeText {
+  font-size: 10px;
+  color: #d2d2d2;
+  min-width: 28px;
+  text-align: center;
+}
+
+.timeBar {
+  flex: 1;
+  appearance: none;
+  height: 2px;
+  background: #5a3a74;
+  border-radius: 10px;
+  outline: none;
+}
+
+.timeBar::-webkit-slider-thumb {
+  appearance: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b77ae6;
+  cursor: pointer;
+}
+
+.timeBar::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  border: none;
+  border-radius: 50%;
+  background: #b77ae6;
+  cursor: pointer;
+}
