@@ -2,7 +2,7 @@ import useStyles from "./MainSectionStyles";
 import Menu from "./SideBar/SideBar";
 import Content from "./MainSection/Pages/AllSongs/AllSongs.tsx";
 import type React from "react";
-//import Favorites from "./MainSection/Pages/Favorites/Favorites.tsx";
+import Favorites from "./MainSection/Pages/Favorites/Favorites.tsx";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const AllSongsPage: React.FC = () => {
@@ -14,7 +14,7 @@ const PlaylistsPage: React.FC = () => {
 };
 
 const FavoritesPage: React.FC = () => {
-  return <div>Favorite Page</div>;
+  return <Favorites />;
 };
 
 const MainSection: React.FC = () => {
