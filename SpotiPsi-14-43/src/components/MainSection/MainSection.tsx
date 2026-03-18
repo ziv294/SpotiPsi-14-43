@@ -1,5 +1,5 @@
 import useStyles from "./MainSectionStyles";
-{/*import Menu from "./MainSection/SideBar/SideBar"*/}
+import Menu from "./SideBar/SideBar.tsx"
 import Content from "./MainSection/Pages/AllSongs/AllSongs.tsx"
 
 const MainSection: React.FC = () => {
@@ -7,9 +7,9 @@ const MainSection: React.FC = () => {
 
   return (
   <div className={classes.container}>
-    <h1>no!!!!!!</h1>
+    <Menu />
     <Content />
-    {/* <Menu/> */}
+    
     
   </div>
   )
