@@ -30,30 +30,30 @@ const useStyles = makeStyles({
       borderBottom: "1px solid #444"
     },
     songRow: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderBottom: "1px solid #333",
-    padding: "0.5rem 0"
-  },
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      borderBottom: "1px solid #333",
+      padding: "0.5rem 0"
+    },
 
-  left: {
-    display: "flex",
-    gap: "0.5rem"
-  },
+    left: {
+      display: "flex",
+      gap: "0.5rem"
+    },
 
-  right: {
-    display: "flex",
-    gap: "1rem",
-    cursor: "pointer"
-  },
-  play:{
-    color:"rgb(173, 73, 212)"
-  },
-  heart: {
-    cursor: "pointer",
-    color: "rgb(190, 188, 190)",
-    transition: "0.2s",
+    right: {
+      display: "flex",
+      gap: "1rem",
+      cursor: "pointer"
+    },
+    play:{
+      color:"rgb(173, 73, 212)"
+    },
+    heart: {
+      cursor: "pointer",
+      color: "rgb(190, 188, 190)",
+      transition: "0.2s",
   },
 
   activeHeart: {
@@ -76,8 +76,7 @@ const useStyles = makeStyles({
     cursor: "pointer",
     whiteSpace: "nowrap",
     "&:hover": {
-      backgroundColor: "#3a3a3a",
-      color: "rgb(173, 73, 212)"
+      backgroundColor: "#3a3a3a"
     }
   }
 });
