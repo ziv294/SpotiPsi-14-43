@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useStyles from "./AllSongs";
+import useStyles from "../AllSongs/AllSongs.ts";
 
 type Song = {
   id: string;
@@ -7,9 +7,9 @@ type Song = {
   artist: string;
 };
 
-const AllSongs: React.FC = () => {
+const Favorites: React.FC = () => {
   const classes = useStyles();
-  
+
   const [songs, setSongs] = useState<Song[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
 
@@ -33,7 +33,6 @@ const AllSongs: React.FC = () => {
     }
   };
 
-  // 🔥 הוספתי טעינת favorites מהשרת
   const fetchFavorites = async () => {
     try {
       const res = await fetch("http://localhost:5001/api/favorites");
@@ -46,10 +45,9 @@ const AllSongs: React.FC = () => {
 
   useEffect(() => {
     fetchSongs();
-    fetchFavorites(); // 🔥 חדש
+    fetchFavorites();
   }, []);
 
-  // 🔥 החלפתי רק את הלוגיקה – לא את השימוש
   const toggleFavorite = async (id: string) => {
     try {
       const isFavorite = favorites.includes(id);
@@ -73,17 +71,23 @@ const AllSongs: React.FC = () => {
     }
   };
 
+  const favoriteSongs = songs.filter((song) =>
+    favorites.includes(song.id)
+  );
+
   return (
     <div className={classes.songsContainer}>
-      <h1 className={classes.title}>כל השירים</h1>
+      <h1 className={classes.title}>המועדפים שלי</h1>
 
       {isLoading && <p>Loading...</p>}
       {error && <p>{error}</p>}
 
       {!isLoading && !error && (
         <div className={classes.songsList}>
-          {songs.map((song) => {
-            const isFav = favorites.includes(song.id);
+          {favoriteSongs.length === 0 && <p>אין מועדפים עדיין</p>}
+
+          {favoriteSongs.map((song) => {
+            const isFav = true;
 
             return (
               <div key={song.id} className={classes.songRow}>
@@ -97,9 +101,7 @@ const AllSongs: React.FC = () => {
 
                   <span
                     onClick={() => toggleFavorite(song.id)}
-                    className={`${classes.heart} ${
-                      isFav ? classes.activeHeart : ""
-                    }`}
+                    className={`${classes.heart} ${classes.activeHeart}`}
                   >
                     ❤︎
                   </span>
@@ -113,4 +115,4 @@ const AllSongs: React.FC = () => {
   );
 };
 
-export default AllSongs;
+export default Favorites;
