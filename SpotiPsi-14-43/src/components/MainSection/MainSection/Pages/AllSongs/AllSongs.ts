@@ -2,6 +2,7 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles({
   songsContainer: {
+    direction:"ltr",
     width: "80%",
     display: "flex",
     flexDirection: "column",
@@ -11,7 +12,7 @@ const useStyles = makeStyles({
   },
 
   title: {
-    marginBottom: "1rem"
+    marginBottom: "2rem"
   },
 
   songsList: {
