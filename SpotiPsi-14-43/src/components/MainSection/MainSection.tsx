@@ -7,8 +7,9 @@ const MainSection: React.FC = () => {
 
   return (
   <div className={classes.container}>
-    <Content />
     <Menu />
+    <Content />
+    
     
   </div>
   )
