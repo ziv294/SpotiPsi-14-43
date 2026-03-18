@@ -8,7 +8,7 @@ const SideBar: React.FC = () => {
   return (
     <div className="sidebar">
       <div className="item active" onClick={() => null}>
-        כל השירים
+        🏠︎ כל השירים
       </div>
 
       <div className="item" onClick={() => null}>
