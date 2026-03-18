@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useStyles from "./PlaylistsStyles";
 
 type Playlist = {
@@ -14,6 +14,20 @@ const Playlists: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [newName, setNewName] = useState("");
 
+  const fetchPlaylists = async () => {
+    try {
+      const res = await fetch("http://localhost:5001/api/playlists");
+      const data = await res.json();
+      setPlaylists(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchPlaylists();
+  }, []);
+
   const createPlaylist = async () => {
     if (!newName.trim()) return;
     try {
@@ -28,24 +42,14 @@ const Playlists: React.FC = () => {
         }),
       });
 
-      const serverPlaylist = await res.json();
-      const nextId =
-        playlists.length > 0
-          ? String(Math.max(...playlists.map(p => Number(p.id))) + 1)
-          : "1";
-
-      const newPlaylist: Playlist = {
-        ...serverPlaylist,
-        id: nextId,
-        songIds: serverPlaylist.songIds || []
-      };
+      const newPlaylist = await res.json();
 
       setPlaylists(prev => [...prev, newPlaylist]);
-
       setNewName("");
       setShowModal(false);
 
-    } catch (err) {
+    }
+    catch (err) {
       console.error(err);
     }
   };
@@ -69,7 +73,7 @@ const Playlists: React.FC = () => {
       </div>
 
       <div className={classes.list}>
-        {playlists.map((p) => (
+        {playlists.map(p => (
           <div key={p.id} className={classes.row}>
             {p.name}
           </div>

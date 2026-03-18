@@ -9,12 +9,15 @@ type Song = {
 
 const AllSongs: React.FC = () => {
   const classes = useStyles();
-  
+
   const [songs, setSongs] = useState<Song[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>();
+
+  const [playlists, setPlaylists] = useState<{ id: string, name: string, songIds: string[] }[]>([]);
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   const fetchSongs = async () => {
     setIsLoading(true);
@@ -24,11 +27,13 @@ const AllSongs: React.FC = () => {
       const data = await response.json();
 
       setSongs(data);
-    } catch (error) {
+    }
+    catch (error) {
       console.error(error);
       setError("Something went wrong");
       return;
-    } finally {
+    }
+    finally {
       setIsLoading(false);
     }
   };
@@ -38,7 +43,19 @@ const AllSongs: React.FC = () => {
       const res = await fetch("http://localhost:5001/api/favorites");
       const data = await res.json();
       setFavorites(data);
-    } catch (err) {
+    }
+    catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchPlaylists = async () => {
+    try {
+      const res = await fetch("http://localhost:5001/api/playlists");
+      const data = await res.json();
+      setPlaylists(data);
+    }
+    catch (err) {
       console.error(err);
     }
   };
@@ -46,7 +63,26 @@ const AllSongs: React.FC = () => {
   useEffect(() => {
     fetchSongs();
     fetchFavorites();
+    fetchPlaylists();
   }, []);
+
+  const addToPlaylist = async (playlistId: string, songId: string) => {
+    try {
+      await fetch(`http://localhost:5001/api/playlists/${playlistId}/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ playlistId, songId }),
+      });
+
+      setOpenMenuId(null);
+
+    }
+    catch (err) {
+      console.error(err);
+    }
+  };
 
   const toggleFavorite = async (id: string) => {
     try {
@@ -91,13 +127,28 @@ const AllSongs: React.FC = () => {
                 </div>
 
                 <div className={classes.right}>
-                  <span>✚</span>
-
+                  <div style={{position: "relative"}}>
+                    <span onClick={() => setOpenMenuId(openMenuId === song.id ? null : song.id)}>✚</span>
+                    {
+                      openMenuId===song.id && (
+                        <div className={classes.dropDown}>
+                          {playlists.map(p=>(
+                            <div
+                              key={p.id}
+                              className={classes.dropDownItem}
+                              onClick={()=>addToPlaylist(p.id,song.id)}
+                            >
+                              {p.name}
+                            </div>
+                          ))}
+                        </div>
+                      
+                    )}
+                  </div>
                   <span
                     onClick={() => toggleFavorite(song.id)}
-                    className={`${classes.heart} ${
-                      isFav ? classes.activeHeart : ""
-                    }`}
+                    className={`${classes.heart} ${isFav ? classes.activeHeart : ""
+                      }`}
                   >
                     ❤︎
                   </span>

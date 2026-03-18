@@ -62,7 +62,7 @@ const useStyles = makeStyles({
     backgroundColor: "#2a2a2a",
     padding: "2rem",
     width: "15%",
-    textAlign: "right"
+    textAlign: "center"
   },
 
   input: {
@@ -115,8 +115,9 @@ const useStyles = makeStyles({
         cursor: "pointer",
         "&:hover": {
             color: "#a855f7"
+        }
     }
-}
+    
 });
 
 export default useStyles;
