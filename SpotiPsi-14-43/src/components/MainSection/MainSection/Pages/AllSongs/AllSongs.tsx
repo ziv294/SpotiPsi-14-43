@@ -10,7 +10,7 @@ type Song = {
 const MainSection: React.FC = () => {
   const classes = useStyles();
   const [songs, setSongs] = useState<Song[]>([]);
-  const [favorites, setFavorites] = useState<string[]>([]); // ⭐ חדש
+  const [favorites, setFavorites] = useState<string[]>([]); 
 
   useEffect(() => {
     fetch("http://localhost:5001/api/songs")
