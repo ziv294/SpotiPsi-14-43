@@ -2,6 +2,7 @@ import {makeStyles} from "@mui/styles";
 
 const useStyles=makeStyles({
   container:{
+    direction:"rtl",
     width: "100%",
     display: "flex",
     flexDirection:"row",
@@ -12,11 +13,12 @@ const useStyles=makeStyles({
     backgroundColor:"rgb(19, 18, 18)"
   },
   content:{
-    width:"80%",
+    direction:"ltr",
+    width:"90%",
     display: "flex",
     flexDirection:"column",
-    justifyContent: "start",
-    alignItems: "right"
+    justifyContent: "end",
+    alignItems: "left",
   }
 });
 
