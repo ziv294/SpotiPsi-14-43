@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useStyles from "../AllSongs/AllSongs.ts"; // ⚠️ אותו style כמו AllSongs
+import useStyles from "../AllSongs/AllSongs.ts";
 
 type Song = {
   id: string;
@@ -48,7 +48,6 @@ const Favorites: React.FC = () => {
     fetchFavorites();
   }, []);
 
-  // 🔥 אותו toggle כמו AllSongs
   const toggleFavorite = async (id: string) => {
     try {
       const isFavorite = favorites.includes(id);
@@ -72,7 +71,6 @@ const Favorites: React.FC = () => {
     }
   };
 
-  // 🔥 ההבדל היחיד: סינון
   const favoriteSongs = songs.filter((song) =>
     favorites.includes(song.id)
   );
@@ -89,7 +87,7 @@ const Favorites: React.FC = () => {
           {favoriteSongs.length === 0 && <p>אין מועדפים עדיין</p>}
 
           {favoriteSongs.map((song) => {
-            const isFav = true; // כי זה כבר מועדפים
+            const isFav = true;
 
             return (
               <div key={song.id} className={classes.songRow}>
