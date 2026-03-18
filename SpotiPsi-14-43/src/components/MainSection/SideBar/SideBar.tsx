@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-//import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BsHouseFill, BsFileEarmarkPlusFill, BsHeartFill } from "react-icons/bs";
 import "./SideBar.css";
 
 const SideBar: React.FC = () => {
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   const [selected, setSelected] = useState<string>("songs");
 
   const handleClick = (name: string, path: string) => {
     setSelected(name);
-    //navigate(path);
+    navigate(path);
   };
 
   return (
