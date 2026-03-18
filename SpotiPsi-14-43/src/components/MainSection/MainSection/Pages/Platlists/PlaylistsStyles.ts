@@ -39,12 +39,14 @@ const useStyles = makeStyles({
   list: {
     display: "flex",
     flexDirection: "column",
-    gap: "1rem"
   },
 
   row: {
     padding: "1rem",
-    borderBottom: "1px solid #333"
+    borderBottom: "1px solid #333",
+    "&:hover": {
+      backgroundColor: "#3a3a3a"
+    }
   },
 
   modalBackdrop: {

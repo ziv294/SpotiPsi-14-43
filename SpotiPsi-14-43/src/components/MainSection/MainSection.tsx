@@ -4,6 +4,7 @@ import Content from "./MainSection/Pages/AllSongs/AllSongs.tsx";
 import type React from "react";
 import Favorites from "./MainSection/Pages/Favorites/Favorites.tsx";
 import Platlists from "./MainSection/Pages/Platlists/Playlists.tsx";
+import PlaylistPage from "./MainSection/Pages/Platlists/Playlist/Playlist";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const AllSongsPage: React.FC = () => {
@@ -31,6 +32,8 @@ const MainSection: React.FC = () => {
             <Route path="/" element={<AllSongsPage />} />
             <Route path="/playlists" element={<PlaylistsPage />} />
             <Route path="/favorites" element={<FavoritesPage />} />
+
+            <Route path="/playlist/:playlistId" element={<PlaylistPage />}></Route>
           </Routes>
         </div>
       </div>

@@ -21,7 +21,8 @@ const AllSongs: React.FC = () => {
       const response = await fetch("http://localhost:5001/api/songs");
       const data = await response.json();
       setSongs(data);
-    } catch (error) {
+    }
+    catch (error) {
       console.error(error);
     }
   };
@@ -31,7 +32,8 @@ const AllSongs: React.FC = () => {
       const res = await fetch("http://localhost:5001/api/favorites");
       const data = await res.json();
       setFavorites(data);
-    } catch (err) {
+    }
+    catch (err) {
       console.error(err);
     }
   };
@@ -41,7 +43,8 @@ const AllSongs: React.FC = () => {
       const res = await fetch("http://localhost:5001/api/playlists");
       const data = await res.json();
       setPlaylists(data);
-    } catch (err) {
+    }
+    catch (err) {
       console.error(err);
     }
   };
@@ -61,10 +64,9 @@ const AllSongs: React.FC = () => {
         },
         body: JSON.stringify({ playlistId, songId }),
       });
-
       setOpenMenuId(null);
-
-    } catch (err) {
+    }
+    catch (err) {
       console.error(err);
     }
   };
@@ -72,7 +74,6 @@ const AllSongs: React.FC = () => {
   const toggleFavorite = async (id: string) => {
     try {
       const isFavorite = favorites.includes(id);
-
       const url = isFavorite
         ? "http://localhost:5001/api/favorites/remove"
         : "http://localhost:5001/api/favorites/add";
@@ -84,10 +85,10 @@ const AllSongs: React.FC = () => {
         },
         body: JSON.stringify({ songId: id }),
       });
-
       const updatedFavorites = await res.json();
       setFavorites(updatedFavorites);
-    } catch (err) {
+    }
+    catch (err) {
       console.error(err);
     }
   };

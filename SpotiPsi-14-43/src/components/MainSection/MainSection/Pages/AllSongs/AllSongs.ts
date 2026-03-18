@@ -10,6 +10,15 @@ const useStyles = makeStyles({
       padding: "1rem",
       color: "rgb(190, 188, 190)"
     },
+    header:{
+      display:"flex",
+      flexDirection: "row",
+      justifyContent:"space-between",
+      alignItems:"center",
+      width:"100%",
+      gap: "0.5rem",
+      direction:"rtl"
+    },
 
     title: {
       marginBottom: "2rem"
@@ -22,19 +31,15 @@ const useStyles = makeStyles({
       flexDirection: "column",
       gap: "0.5rem"
     },
-
-    songItem: {
-      display: "flex",
-      justifyContent: "space-between",
-      padding: "0.5rem",
-      borderBottom: "1px solid #444"
-    },
     songRow: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       borderBottom: "1px solid #333",
-      padding: "0.5rem 0"
+      padding: "0.5rem 0",
+      "&:hover": {
+        backgroundColor: "#3a3a3a"
+      }
     },
 
     left: {
