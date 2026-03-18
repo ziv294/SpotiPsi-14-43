@@ -33,7 +33,6 @@ const AllSongs: React.FC = () => {
     }
   };
 
-  // 🔥 הוספתי טעינת favorites מהשרת
   const fetchFavorites = async () => {
     try {
       const res = await fetch("http://localhost:5001/api/favorites");
@@ -46,10 +45,9 @@ const AllSongs: React.FC = () => {
 
   useEffect(() => {
     fetchSongs();
-    fetchFavorites(); // 🔥 חדש
+    fetchFavorites();
   }, []);
 
-  // 🔥 החלפתי רק את הלוגיקה – לא את השימוש
   const toggleFavorite = async (id: string) => {
     try {
       const isFavorite = favorites.includes(id);
