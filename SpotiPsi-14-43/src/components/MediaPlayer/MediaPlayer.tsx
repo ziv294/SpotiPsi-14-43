@@ -17,11 +17,13 @@ const MediaPlayer: React.FC = () => {
     handlePlayPause,
     handleNext,
     handlePrev,
-    formatTime
+    formatTime,
+    handleSeek,
+    songsExample
   } = useAudioPlayer();
 
   useEffect(() => {
-    fetchSongs();
+    fetchSongs(songsExample);
   }, []);
 
   const songPath = currentSong ? `/songs/${currentSong.id}.mp3` : "";
@@ -59,7 +61,7 @@ onEnded={() => {
       <div className="timeBarSection">
         <div className="timeText">{formatTime(currentTime)}</div>
 
-        <input className="timeBar" type="range" min="0" max={duration} value={currentTime} readOnly/>  
+        <input className="timeBar" type="range" min="0" max={duration} value={currentTime} onChange={(e) => handleSeek(Number(e.target.value))}/>  
 
         <div className="timeText">{formatTime(duration)}</div>
       </div>
