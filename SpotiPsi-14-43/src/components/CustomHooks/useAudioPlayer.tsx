@@ -8,26 +8,6 @@ type Song = {
   album: string;
 };
 
-const songsExample = [
-  {
-    id: "1",
-    name: "Shape of You",
-    artist: "Ed Sheeran",
-    album: "Divide"
-  },
-  {
-    id: "2",
-    name: "Blinding Lights",
-    artist: "The Weeknd",
-    album: "After Hours"
-  },
-  {
-    id: "3",
-    name: "Someone Like You",
-    artist: "Adele",
-    album: "21"
-  }];
-
 function useAudioPlayer() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
@@ -46,7 +26,7 @@ function useAudioPlayer() {
   const fetchSongs = async (songsList: Song[]) => {
   setSongs(songsList);
   setCurrentSongIndex(0);
-  setIsPlaying(true);
+  setIsPlaying(false);
 };
 
 
