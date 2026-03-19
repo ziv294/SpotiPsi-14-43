@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
 import "./MediaPlayer.css";
 import {useAudioPlayerContext} from "../CustomHooks/AudioPlayerContext";
 import { FaPlay, FaPause, FaStepBackward, FaStepForward } from "react-icons/fa";
 
 const MediaPlayer: React.FC = () => {
   const {
-    songs,
-    fetchSongs,
     currentSong,
     isPlaying,
     currentTime,
