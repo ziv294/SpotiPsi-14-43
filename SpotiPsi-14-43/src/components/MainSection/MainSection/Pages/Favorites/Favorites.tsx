@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import useStyles from "../AllSongs/AllSongs.ts";
+import useStyles from "../AllSongs/AllSongs";
+import { useAudioPlayerContext } from "../../../../CustomHooks/AudioPlayerContext";
 
 type Song = {
   id: string;
@@ -12,17 +13,17 @@ const Favorites: React.FC = () => {
 
   const [songs, setSongs] = useState<Song[]>([]);
   const [favorites, setFavorites] = useState<string[]>([]);
-
-  const [playlists, setPlaylists] = useState<{ id: string, name: string, songIds: string[] }[]>([]);
+  const [playlists, setPlaylists] = useState<{ id: string; name: string; songIds: string[] }[]>([]);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
-  const fetchSongs = async () => {
+  const { fetchSongs } = useAudioPlayerContext();
+
+  const fetchAllSongs = async () => {
     try {
       const response = await fetch("http://localhost:5001/api/songs");
       const data = await response.json();
       setSongs(data);
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
     }
   };
@@ -32,8 +33,7 @@ const Favorites: React.FC = () => {
       const res = await fetch("http://localhost:5001/api/favorites");
       const data = await res.json();
       setFavorites(data);
-    }
-    catch (err) {
+    } catch (err) {
       console.error(err);
     }
   };
@@ -43,14 +43,13 @@ const Favorites: React.FC = () => {
       const res = await fetch("http://localhost:5001/api/playlists");
       const data = await res.json();
       setPlaylists(data);
-    }
-    catch (err) {
+    } catch (err) {
       console.error(err);
     }
   };
 
   useEffect(() => {
-    fetchSongs();
+    fetchAllSongs();
     fetchFavorites();
     fetchPlaylists();
   }, []);
@@ -65,9 +64,7 @@ const Favorites: React.FC = () => {
         body: JSON.stringify({ playlistId, songId }),
       });
       setOpenMenuId(null);
-
-    }
-    catch (err) {
+    } catch (err) {
       console.error(err);
     }
   };
@@ -89,8 +86,7 @@ const Favorites: React.FC = () => {
 
       const updatedFavorites = await res.json();
       setFavorites(updatedFavorites);
-    }
-    catch (err) {
+    } catch (err) {
       console.error(err);
     }
   };
@@ -99,14 +95,27 @@ const Favorites: React.FC = () => {
     favorites.includes(song.id)
   );
 
+  const handlePlay = (index: number) => {
+    const recordedSongs = [
+      ...favoriteSongs.slice(index),
+      ...favoriteSongs.slice(0, index),
+    ];
+
+    fetchSongs(recordedSongs);
+  };
+
   return (
     <div className={classes.songsContainer}>
       <h1 className={classes.title}>המועדפים שלי</h1>
 
       <div className={classes.songsList}>
-        {favoriteSongs.map((song) => {
+        {favoriteSongs.map((song, index) => {
           return (
-            <div key={song.id} className={classes.songRow}>
+            <div
+              key={song.id}
+              className={classes.songRow}
+              onClick={() => handlePlay(index)}
+            >
               <div className={classes.left}>
                 <div className={classes.play}>▶</div>
                 {song.name} - {song.artist}
@@ -114,7 +123,12 @@ const Favorites: React.FC = () => {
 
               <div className={classes.right}>
                 <div style={{ position: "relative" }}>
-                  <span onClick={() => setOpenMenuId(openMenuId === song.id ? null : song.id)}>
+                  <span
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setOpenMenuId(openMenuId === song.id ? null : song.id);
+                    }}
+                  >
                     ✚
                   </span>
 
@@ -124,7 +138,10 @@ const Favorites: React.FC = () => {
                         <div
                           key={p.id}
                           className={classes.dropDownItem}
-                          onClick={() => addToPlaylist(p.id, song.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            addToPlaylist(p.id, song.id);
+                          }}
                         >
                           {p.name}
                         </div>
@@ -134,7 +151,10 @@ const Favorites: React.FC = () => {
                 </div>
 
                 <span
-                  onClick={() => toggleFavorite(song.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(song.id);
+                  }}
                   className={`${classes.heart} ${classes.activeHeart}`}
                 >
                   ❤︎

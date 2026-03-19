@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./MediaPlayer.css";
-import useAudioPlayer from "../CustomHooks/useAudioPlayer";
+import {useAudioPlayerContext} from "../CustomHooks/AudioPlayerContext";
 import { FaPlay, FaPause, FaStepBackward, FaStepForward } from "react-icons/fa";
 
 const MediaPlayer: React.FC = () => {
@@ -20,11 +20,8 @@ const MediaPlayer: React.FC = () => {
     handlePrev,
     formatTime,
     handleSeek
-  } = useAudioPlayer();
+  } = useAudioPlayerContext();
 
-  useEffect(() => {
-    fetchSongs(songs);
-  }, []);
 
   const songPath = currentSong ? `/songs/${currentSong.id}.mp3` : "";
 
