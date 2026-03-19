@@ -18,8 +18,8 @@ function useAudioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-  if (isPlaying && audioRef.current) {
-    audioRef.current.play();
+  if (isPlaying ) {
+    audioRef.current?.play();
   }
   }, [currentSongIndex]);
 
@@ -42,7 +42,7 @@ function useAudioPlayer() {
       audioRef.current.play();
     }
 
-    setIsPlaying((prev) => !prev);
+    setIsPlaying(prev => !prev);
   };
 
   const handleNext = (): void => {
