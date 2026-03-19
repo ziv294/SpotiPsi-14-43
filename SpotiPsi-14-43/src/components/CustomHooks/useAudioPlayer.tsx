@@ -23,6 +23,7 @@ function useAudioPlayer() {
   }
   }, [currentSongIndex]);
 
+  useEffect(() => {
   const fetchSongs = async () => {
     try {
       const response = await fetch("http://localhost:5001/api/songs");
@@ -32,6 +33,9 @@ function useAudioPlayer() {
       console.error(error);
     }
   };
+
+  fetchSongs();
+  }, []);
 
   const currentSong = songs[currentSongIndex];
 
@@ -48,14 +52,14 @@ function useAudioPlayer() {
   };
 
   const handleNext = (): void => {
-    setCurrentSongIndex((prev) => (prev + 1 === songs.length - 1 ? prev = 0 : prev = prev + 1));
+    setCurrentSongIndex((prev) => (prev === songs.length - 1 ? prev = 0 : prev = prev + 1));  
     setCurrentTime(0);
     setDuration(0);
     setIsPlaying(true);
   };
 
   const handlePrev = (): void => {
-    setCurrentSongIndex((prev) => (prev - 1 === 0 ? prev = songs.length - 1 : prev = prev - 1));
+    setCurrentSongIndex((prev) => (prev === 0 ? prev = songs.length - 1 : prev = prev - 1));
     setCurrentTime(0);
     setDuration(0);
     setIsPlaying(true);
