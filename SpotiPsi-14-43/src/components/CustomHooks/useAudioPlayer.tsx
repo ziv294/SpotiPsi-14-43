@@ -26,8 +26,7 @@ function useAudioPlayer() {
   const fetchSongs = async (songsList: Song[]) => {
   setSongs(songsList);
   setCurrentSongIndex(0);
-  setIsPlaying(true);
-  handlePlayPause()
+  setIsPlaying(false);
 };
 
 
