@@ -21,7 +21,6 @@ const PlaylistPage: React.FC = () => {
   } = useSongsData();
 
   const { playFromList } = usePlayHandler();
-
   const [playlist, setPlaylist] = useState<any>(null);
 
   useEffect(() => {
@@ -31,9 +30,8 @@ const PlaylistPage: React.FC = () => {
 
   const playlistSongs = playlist
     ? playlist.songIds
-        .map((id: string) => songs.find((s) => s.id === id))
-        .filter(Boolean)
-    : [];
+      .map((id: string) => songs.find((s) => s.id === id))
+      .filter(Boolean) : [];
 
   return (
     <div className={classes.songsContainer}>

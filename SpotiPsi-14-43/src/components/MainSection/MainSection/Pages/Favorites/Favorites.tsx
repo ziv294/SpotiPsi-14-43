@@ -17,7 +17,6 @@ const Favorites: React.FC = () => {
   } = useSongsData();
 
   const { playFromList } = usePlayHandler();
-
   const favoriteSongs = songs.filter((song) =>
     favorites.includes(song.id)
   );

@@ -2,7 +2,6 @@ import { useAudioPlayerContext } from "./AudioPlayerContext";
 
 export const usePlayHandler = () => {
   const { fetchSongs } = useAudioPlayerContext();
-
   const playFromList = (list: any[], index: number) => {
     const recordedSongs = [
       ...list.slice(index),
@@ -10,6 +9,5 @@ export const usePlayHandler = () => {
     ];
     fetchSongs(recordedSongs);
   };
-
   return { playFromList };
 };
