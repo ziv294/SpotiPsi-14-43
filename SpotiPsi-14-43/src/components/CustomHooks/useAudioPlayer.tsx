@@ -8,6 +8,26 @@ type Song = {
   album: string;
 };
 
+const songsExample = [
+  {
+    id: "1",
+    name: "Shape of You",
+    artist: "Ed Sheeran",
+    album: "Divide"
+  },
+  {
+    id: "2",
+    name: "Blinding Lights",
+    artist: "The Weeknd",
+    album: "After Hours"
+  },
+  {
+    id: "3",
+    name: "Someone Like You",
+    artist: "Adele",
+    album: "21"
+  }];
+
 function useAudioPlayer() {
   const [songs, setSongs] = useState<Song[]>([]);
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
@@ -23,19 +43,13 @@ function useAudioPlayer() {
   }
   }, [currentSongIndex]);
 
-  useEffect(() => {
-  const fetchSongs = async () => {
-    try {
-      const response = await fetch("http://localhost:5001/api/songs");
-      const data = await response.json();
-      setSongs(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const fetchSongs = async (songsList: Song[]) => {
+  setSongs(songsList);
+};
 
-  fetchSongs();
-  }, []);
+useEffect(() => {
+  fetchSongs(songsExample);
+}, []);
 
   const currentSong = songs[currentSongIndex];
 
@@ -71,6 +85,11 @@ function useAudioPlayer() {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
+  const handleSeek = (value: number): void => {
+  audioRef.current!.currentTime = value;
+  setCurrentTime(value);
+};
+
   return {
     songs,
     fetchSongs,
@@ -86,7 +105,9 @@ function useAudioPlayer() {
     handlePlayPause,
     handleNext,
     handlePrev,
-    formatTime
+    formatTime,
+    songsExample,
+    handleSeek
   };
 }
 
