@@ -1,208 +1,63 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import useStyles from "../../AllSongs/AllSongs";
-import {useAudioPlayerContext} from "../../../../../CustomHooks/AudioPlayerContext";
-
-type Song = {
-  id: string;
-  name: string;
-  artist: string;
-  album: string;
-};
-
-type Playlist = {
-  id: string;
-  name: string;
-  songIds: string[];
-};
+import useStyles from "../..//AllSongs/AllSongs";
+import SongRow from "../../GlobalComponents/SongRow";
+import { useSongsData } from "../../../../../CustomHooks/useSongsData";
+import { usePlayHandler } from "../../../../../CustomHooks/usePlayHandler";
 
 const PlaylistPage: React.FC = () => {
   const classes = useStyles();
   const navigate = useNavigate();
   const { playlistId } = useParams();
 
-  const [songs, setSongs] = useState<Song[]>([]);
-  const [playlist, setPlaylist] = useState<Playlist | null>(null);
-  const [favorites, setFavorites] = useState<string[]>([]);
-  const [playlists, setPlaylists] = useState<Playlist[]>([]);
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const {
+    songs,
+    favorites,
+    playlists,
+    openMenuId,
+    setOpenMenuId,
+    toggleFavorite,
+    addToPlaylist,
+  } = useSongsData();
 
-  const { fetchSongs } = useAudioPlayerContext();
-
-  const fetchAllSongs = async () => {
-    try {
-      const res = await fetch("http://localhost:5001/api/songs");
-      const data = await res.json();
-      setSongs(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const fetchFavorites = async () => {
-    try {
-      const res = await fetch("http://localhost:5001/api/favorites");
-      const data = await res.json();
-      setFavorites(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const fetchPlaylists = async () => {
-    try {
-      const res = await fetch("http://localhost:5001/api/playlists");
-      const data = await res.json();
-      setPlaylists(data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const fetchPlaylist = async () => {
-    try {
-      const res = await fetch("http://localhost:5001/api/playlists");
-      const data = await res.json();
-      const current = data.find((p: Playlist) => p.id === playlistId);
-      setPlaylist(current || null);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const { playFromList } = usePlayHandler();
+  const [playlist, setPlaylist] = useState<any>(null);
 
   useEffect(() => {
-    fetchAllSongs();
-    fetchFavorites();
-    fetchPlaylists();
-    fetchPlaylist();
-  }, [playlistId]);
+    const current = playlists.find(p => p.id === playlistId);
+    setPlaylist(current);
+  }, [playlistId, playlists]);
 
   const playlistSongs = playlist
-  ? playlist.songIds
-      .map(id => songs.find(song => song.id === id))
-      .filter((song): song is Song => song !== undefined)
-  : [];
-
-  const handlePlay = (index: number) => {
-    const recordedSongs = [
-      ...playlistSongs.slice(index),
-      ...playlistSongs.slice(0, index),
-    ];
-    fetchSongs(recordedSongs);
-  };
-
-  const addToPlaylist = async (playlistId: string, songId: string) => {
-    try {
-      await fetch(`http://localhost:5001/api/playlists/${playlistId}/add`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ playlistId, songId }),
-      });
-      setOpenMenuId(null);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const toggleFavorite = async (id: string) => {
-    try {
-      const isFavorite = favorites.includes(id);
-      const url = isFavorite
-        ? "http://localhost:5001/api/favorites/remove"
-        : "http://localhost:5001/api/favorites/add";
-
-      const res = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ songId: id }),
-      });
-
-      const updatedFavorites = await res.json();
-      setFavorites(updatedFavorites);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    ? playlist.songIds
+      .map((id: string) => songs.find((s) => s.id === id))
+      .filter(Boolean) : [];
 
   return (
     <div className={classes.songsContainer}>
       <div className={classes.header}>
-        <h1 className={classes.title}>
-          פלייליסט {playlist?.name}
-        </h1>
-        <h1
-          className={classes.backBtn}
-          onClick={() => navigate(`/playlists`)}
-        >
+        <h1 className={classes.title}>פלייליסט {playlist?.name}</h1>
+        <h1 className={classes.backBtn} onClick={() => navigate(`/playlists`)}>
           ⇦
         </h1>
       </div>
 
       <div className={classes.songsList}>
-        {playlistSongs.map((song, index) => {
-          const isFav = favorites.includes(song.id);
-
-          return (
-            <div
-              key={song.id}
-              className={classes.songRow}
-              onClick={() => handlePlay(index)}
-            >
-              <div className={classes.left}>
-                <div className={classes.play}>▶</div>
-                {song.name} - {song.artist}
-              </div>
-
-              <div className={classes.right}>
-                <div style={{ position: "relative" }}>
-                  <span
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setOpenMenuId(
-                        openMenuId === song.id ? null : song.id
-                      );
-                    }}
-                  >
-                    ✚
-                  </span>
-
-                  {openMenuId === song.id && (
-                    <div className={classes.dropDown}>
-                      {playlists.map(p => (
-                        <div
-                          key={p.id}
-                          className={classes.dropDownItem}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            addToPlaylist(p.id, song.id);
-                          }}
-                        >
-                          {p.name}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                <span
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleFavorite(song.id);
-                  }}
-                  className={`${classes.heart} ${
-                    isFav ? classes.activeHeart : ""
-                  }`}
-                >
-                  ❤︎
-                </span>
-              </div>
-            </div>
-          );
-        })}
+        {playlistSongs.map((song: any, index: number) => (
+          <SongRow
+            key={song.id}
+            song={song}
+            index={index}
+            isFav={favorites.includes(song.id)}
+            onPlay={(i) => playFromList(playlistSongs, i)}
+            toggleFavorite={toggleFavorite}
+            addToPlaylist={addToPlaylist}
+            playlists={playlists}
+            openMenuId={openMenuId}
+            setOpenMenuId={setOpenMenuId}
+            classes={classes}
+          />
+        ))}
       </div>
     </div>
   );

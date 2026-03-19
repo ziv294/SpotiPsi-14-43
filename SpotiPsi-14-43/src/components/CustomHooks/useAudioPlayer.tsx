@@ -18,8 +18,8 @@ function useAudioPlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-  if (isPlaying && audioRef.current) {
-    audioRef.current.play();
+  if (isPlaying ) {
+    audioRef.current?.play();
   }
   }, [currentSongIndex]);
 
@@ -41,21 +41,23 @@ function useAudioPlayer() {
       audioRef.current.play();
     }
 
-    setIsPlaying((prev) => !prev);
+    setIsPlaying(prev => !prev);
   };
 
   const handleNext = (): void => {
     setCurrentSongIndex((prev) => (prev === songs.length - 1 ? prev = 0 : prev = prev + 1));  
     setCurrentTime(0);
     setDuration(0);
-    setIsPlaying(true);
+    setIsPlaying(false);
+    handlePlayPause()
   };
 
   const handlePrev = (): void => {
     setCurrentSongIndex((prev) => (prev === 0 ? prev = songs.length - 1 : prev = prev - 1));
     setCurrentTime(0);
     setDuration(0);
-    setIsPlaying(true);
+    setIsPlaying(false);
+    handlePlayPause()
   };
 
   const formatTime = (time: number): string => {
