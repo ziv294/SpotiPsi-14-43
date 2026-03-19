@@ -23,6 +23,13 @@ const useStyles = makeStyles({
     title: {
       marginBottom: "2rem"
     },
+    backBtn:{
+      "&:hover": {
+        color: "#ffffff",
+        transition: "transform 0.3s ease-in-out",
+        transform: "scale(1.3)"
+      }
+    },
 
     songsList: {
       direction:"ltr",
