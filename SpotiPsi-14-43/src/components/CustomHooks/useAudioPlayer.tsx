@@ -47,9 +47,6 @@ function useAudioPlayer() {
   setSongs(songsList);
 };
 
-useEffect(() => {
-  fetchSongs(songsExample);
-}, []);
 
   const currentSong = songs[currentSongIndex];
 
@@ -94,7 +91,6 @@ useEffect(() => {
     songs,
     fetchSongs,
     currentSong,
-    currentSongIndex,
     isPlaying,
     currentTime,
     duration,
@@ -106,7 +102,6 @@ useEffect(() => {
     handleNext,
     handlePrev,
     formatTime,
-    songsExample,
     handleSeek
   };
 }

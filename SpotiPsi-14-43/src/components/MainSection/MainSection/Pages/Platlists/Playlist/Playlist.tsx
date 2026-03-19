@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useStyles from "../../AllSongs/AllSongs";
 import { useNavigate } from "react-router-dom";
+import useAudioPlayer from "../../../../../CustomHooks/useAudioPlayer";
 
 type Song = {
     id: string;
     name: string;
     artist: string;
+    album: string;
 };
 
 type Playlist = {
@@ -27,7 +29,9 @@ const PlaylistPage: React.FC = () => {
     const [playlists, setPlaylists] = useState<Playlist[]>([]);
     const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
-    const fetchSongs = async () => {
+    const {fetchSongs}=useAudioPlayer();
+
+    const fetchAllSongs = async () => {
         try {
             const res = await fetch("http://localhost:5001/api/songs");
             const data = await res.json();
@@ -72,8 +76,16 @@ const PlaylistPage: React.FC = () => {
         }
     };
 
+    const handlePlay=(index:number)=>{
+        const recordedSongs=[
+            ...playlistSongs.slice(index),
+            ...playlistSongs.slice(0,index)
+        ];
+        fetchSongs(recordedSongs);
+    }
+
     useEffect(() => {
-        fetchSongs();
+        fetchAllSongs();
         fetchFavorites();
         fetchPlaylists();
         fetchPlaylist();
@@ -127,7 +139,7 @@ const PlaylistPage: React.FC = () => {
                 <h1 className={classes.title}>
                     פלייליסט {playlist?.name}
                 </h1>
-                <h1 
+                <h1
                     className={classes.backBtn}
                     onClick={() => navigate(`/playlists`)}>⇦
                 </h1>
@@ -138,7 +150,10 @@ const PlaylistPage: React.FC = () => {
                     const isFav = favorites.includes(song.id);
 
                     return (
-                        <div key={song.id} className={classes.songRow}>
+                        <div key={song.id} 
+                            className={classes.songRow}
+                            onClick={() => handlePlay(playlistSongs.findIndex(s => s.id === song.id))}
+                        >
                             <div className={classes.left}>
                                 <div className={classes.play}>▶</div>
                                 {song.name} - {song.artist}

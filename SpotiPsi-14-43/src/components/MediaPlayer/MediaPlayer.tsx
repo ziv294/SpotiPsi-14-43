@@ -5,11 +5,12 @@ import { FaPlay, FaPause, FaStepBackward, FaStepForward } from "react-icons/fa";
 
 const MediaPlayer: React.FC = () => {
   const {
+    songs,
+    fetchSongs,
     currentSong,
     isPlaying,
     currentTime,
     duration,
-    fetchSongs,
     audioRef,
     setCurrentTime,
     setDuration,
@@ -18,12 +19,11 @@ const MediaPlayer: React.FC = () => {
     handleNext,
     handlePrev,
     formatTime,
-    handleSeek,
-    songsExample
+    handleSeek
   } = useAudioPlayer();
 
   useEffect(() => {
-    fetchSongs(songsExample);
+    fetchSongs(songs);
   }, []);
 
   const songPath = currentSong ? `/songs/${currentSong.id}.mp3` : "";
